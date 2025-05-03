@@ -1,5 +1,6 @@
 package vn.iotstar.TheLaApp.controller;
 
+import vn.iotstar.TheLaApp.dto.OrderDto;
 import vn.iotstar.TheLaApp.dto.ProductDto;
 import vn.iotstar.TheLaApp.service.implement.ProductService;
 
@@ -36,5 +37,10 @@ public class ProductController {
   @GetMapping("/latest")
   public List<ProductDto> get10RecentActiveAndNotDeletedProducts() {
 	  return productService.get10RecentActiveAndNotDeletedProducts();
+  }
+  
+  @GetMapping("/search")
+  public List<ProductDto> getProductsBySearch(@RequestParam("word") String word) {
+	  return productService.getProductsBySearch(word);
   }
 }

@@ -57,4 +57,10 @@ public class ProductService implements IProductService{
 		List<Product> list = productRepository.getTop10BestSellingActiveAndNotDeletedProducts();
 		return convert.convertToListProductDto(list);
 	}
+
+	@Override
+	public List<ProductDto> getProductsBySearch(String word) {
+		List<Product> list = productRepository.getProductsBySearch(word); 
+		return convert.convertToListProductDto(list);
+	}
 }

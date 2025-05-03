@@ -19,4 +19,5 @@ public interface IProductService {
 	List<ProductDto> getActiveAndNotDeletedProductsByCategoryId(Long categoryId);
 	List<ProductDto> getTop10BestSellingActiveAndNotDeletedProducts();
 	List<ProductDto> get10RecentActiveAndNotDeletedProducts();
+	List<ProductDto> getProductsBySearch(String word);
 }

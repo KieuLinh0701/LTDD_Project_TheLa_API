@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import vn.iotstar.TheLaApp.dto.ProductDto;
+import vn.iotstar.TheLaApp.entity.Order;
 import vn.iotstar.TheLaApp.entity.Product;
 import vn.iotstar.TheLaApp.entity.User;
 
@@ -23,6 +24,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 			+ "FROM products p\n"
 			+ "INNER JOIN product_sizes ps ON p.product_id = ps.product_id\n"
 			+ "INNER JOIN order_details od ON ps.product_size_id = od.product_size_id\n"
+			+ "WHERE p.is_active = 1 AND p.is_delete = 0\n"
 			+ "GROUP BY p.category_id, p.create_date, p.description, p.is_active, p.is_delete, p.name, p.product_id, p.status\n"
 			+ "ORDER BY SUM(od.quantity) DESC", nativeQuery = true)
 	List<Product> getTop10BestSellingActiveAndNotDeletedProducts();
@@ -31,4 +33,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 			+ "WHERE is_active = 1 AND is_delete = 0 \n"
 			+ "ORDER BY create_date DESC", nativeQuery = true)
 	List<Product> get10RecentActiveAndNotDeletedProducts(); 
+	
+	@Query(value = "SELECT *\n"
+			+ "FROM products \n"
+			+ "WHERE name LIKE CONCAT('%', :word , '%') AND is_active = 1 AND is_delete = 0 \n"
+			+ "ORDER BY create_date ASC;", nativeQuery = true)
+	List<Product> getProductsBySearch(@Param("word") String word);
 }
