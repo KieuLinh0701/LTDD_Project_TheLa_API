@@ -14,7 +14,7 @@ import vn.iotstar.TheLaApp.entity.User;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-	@Query(value = "SELECT * FROM products WHERE is_active = 1 AND is_delete = 0", nativeQuery = true)
+	@Query(value = "SELECT * FROM products WHERE is_active = 1 AND is_delete = 0  AND status = 1", nativeQuery = true)
     List<Product> getAllActiveAndNotDeletedProducts();
 	
 	@Query(value = "SELECT * FROM products WHERE is_active = 1 AND is_delete = 0 AND category_id = :categoryId", nativeQuery = true)
@@ -24,19 +24,19 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 			+ "FROM products p\n"
 			+ "INNER JOIN product_sizes ps ON p.product_id = ps.product_id\n"
 			+ "INNER JOIN order_details od ON ps.product_size_id = od.product_size_id\n"
-			+ "WHERE p.is_active = 1 AND p.is_delete = 0\n"
+			+ "WHERE p.is_active = 1 AND p.is_delete = 0 AND status = 1 \n"
 			+ "GROUP BY p.category_id, p.create_date, p.description, p.is_active, p.is_delete, p.name, p.product_id, p.status\n"
 			+ "ORDER BY SUM(od.quantity) DESC", nativeQuery = true)
 	List<Product> getTop10BestSellingActiveAndNotDeletedProducts();
 	
 	@Query(value = "SELECT TOP 10 * FROM products \n"
-			+ "WHERE is_active = 1 AND is_delete = 0 \n"
+			+ "WHERE is_active = 1 AND is_delete = 0 AND status = 1 \n"
 			+ "ORDER BY create_date DESC", nativeQuery = true)
 	List<Product> get10RecentActiveAndNotDeletedProducts(); 
 	
 	@Query(value = "SELECT *\n"
 			+ "FROM products \n"
-			+ "WHERE name LIKE CONCAT('%', :word , '%') AND is_active = 1 AND is_delete = 0 \n"
+			+ "WHERE name LIKE CONCAT('%', :word , '%') AND is_active = 1 AND is_delete = 0  AND status = 1\n"
 			+ "ORDER BY create_date ASC;", nativeQuery = true)
 	List<Product> getProductsBySearch(@Param("word") String word);
 }
